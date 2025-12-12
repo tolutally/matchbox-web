@@ -1,0 +1,250 @@
+.footer {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #030712;
+}
+
+.footer-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(40% 40% at 80% 10%, rgba(56, 189, 248, 0.12), transparent 60%);
+}
+
+.footer-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .footer-container {
+    padding: 2.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-container {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Top Row */
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .footer-top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.footer-logo-full {
+  height: 2.6rem;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Newsletter */
+.footer-newsletter {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer-newsletter {
+    width: auto;
+    min-width: 440px;
+  }
+}
+
+.newsletter-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.newsletter-input-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.newsletter-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.625rem 2.5rem 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: white;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.newsletter-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.newsletter-input:focus {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.newsletter-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 1.25rem;
+  width: 1.25rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.newsletter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  background: rgba(56, 189, 248, 0.9);
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: black;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.newsletter-btn:hover {
+  background: #38bdf8;
+}
+
+.send-icon {
+  height: 1rem;
+  width: 1rem;
+}
+
+/* Middle Row */
+.footer-middle {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .footer-middle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.social-link {
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.social-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.social-link svg {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-end;
+  grid-column: span 2;
+}
+
+@media (min-width: 640px) {
+  .footer-links {
+    grid-column: span 1;
+  }
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+/* Bottom Row */
+.footer-bottom {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (min-width: 640px) {
+  .footer-bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.footer-copyright {
+  margin: 0;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 1rem;
+}
+
+.legal-link {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.legal-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}

@@ -1,0 +1,13 @@
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
