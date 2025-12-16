@@ -19,7 +19,7 @@ const processSteps: ProcessStep[] = [
     id: 2,
     title: 'Design the Right Solution',
     description:
-      'We design a tailored strategy—voice agent scripts, booking logic, or reminder flows—mapping caller journeys, integration points, and guardrails around your existing stack.',
+      'We design a tailored strategy - voice agent scripts, booking logic, or reminder flows, mapping caller journeys, integration points, and guardrails around your existing stack.',
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ const ProcessSection = () => {
           </h2>
           <p className="process-subtitle">
             Our workflow is clear, collaborative, and engineered to ship
-            production-ready AI systems in weeks—not months.
+            production-ready AI systems in weeks, and not months.
           </p>
         </div>
 

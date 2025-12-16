@@ -27,16 +27,14 @@ const SecuritySection = () => {
               </svg>
             </div>
             <h3 className="security-title">
-              Built for healthcare-grade privacy
+              Built with enterprise-grade privacy
             </h3>
           </div>
 
           <p className="security-description">
-            Matchbox is designed for clinics, physio, spas, and aesthetic
-            practices that handle sensitive patient information every day. Calls,
-            transcripts, and reminders are protected with strict access controls
-            and encryption to help your team maintain HIPAA-aligned privacy
-            standards without extra work.
+          Matchbox is designed for businesses that manage high-volume conversations and sensitive 
+          data. Voice interactions, transcripts, and automated follow-ups are secured 
+          with encryption and role-based access controls to support compliance-ready operations across industries.
           </p>
 
           {/* Icon row */}
@@ -60,7 +58,7 @@ const SecuritySection = () => {
                   <path d="m2 2 20 20" />
                 </svg>
               </div>
-              <span>PHI-first privacy</span>
+              <span>GDPR/PIPEDA Compliant</span>
             </div>
 
             <div className="security-feature">

@@ -33,12 +33,14 @@ const HeroSection = () => {
 
         {/* CTAs */}
         <div className="hero-ctas">
-          <button 
-            className="hero-btn hero-btn-primary"
-            onClick={() => navigate('contact')}
-          >
-            Start Automating Calls
-          </button>
+          <div className="hero-btn-primary-wrapper">
+            <button 
+              className="hero-btn hero-btn-primary"
+              onClick={() => navigate('contact')}
+            >
+              Start Automating Calls
+            </button>
+          </div>
 
           <button className="hero-btn hero-btn-secondary">
             <svg
@@ -59,7 +61,7 @@ const HeroSection = () => {
           </button>
         </div>
 
-        {/* Logos / Social Proof */}
+        {/* Logos / Social Proof - Temporarily disabled
         <div className="hero-social-proof">
           <p className="social-proof-label">
             TRUSTED BY BUSY CLINICS &amp; SERVICE TEAMS
@@ -134,6 +136,7 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
+        */}
       </div>
     </section>
   );

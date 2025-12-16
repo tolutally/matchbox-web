@@ -13,39 +13,39 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: 'Elena Rodriguez',
+    name: 'Elena Perkins',
     role: 'CTO',
     company: 'NEXUS HEALTH',
     quote:
       '"Matchbox cut our call handling time by 80%. It\'s not just automation; it\'s intelligent routing that feels indistinguishable from our best front-desk staff."',
-    avatar: 'ER',
+    avatar: '/elena.png',
   },
   {
     id: 2,
-    name: 'Marcus Chen',
+    name: 'Marcus Chui',
     role: 'Operations Director',
     company: 'BRIGHTSIDE DENTAL',
     quote:
       '"We went from missing 40% of calls to capturing every single one. Our no-show rate dropped by 60% thanks to the automated reminders."',
-    avatar: 'MC',
+    avatar: '/marcus.png',
   },
   {
     id: 3,
-    name: 'Sarah Thompson',
+    name: 'Mika Harradson',
     role: 'Practice Manager',
     company: 'PRIMECARE PHYSIO',
     quote:
       '"The AI handles appointment bookings exactly like we would. Patients don\'t even realize they\'re talking to an AI until we tell them."',
-    avatar: 'ST',
+    avatar: '/mika.png',
   },
   {
     id: 4,
-    name: 'James Wilson',
+    name: 'Jamie Edgard',
     role: 'Owner',
-    company: '24/7 PLUMBING CO',
+    company: 'PLUMBING 365',
     quote:
       '"During storm season, we used to lose hundreds of calls. Now Matchbox handles the overflow seamlessly—bookings went up 3x."',
-    avatar: 'JW',
+    avatar: '/jamie.png',
   },
 ];
 
@@ -134,7 +134,7 @@ const TestimonialsSection = () => {
                   className="avatar-circle"
                   style={{ zIndex: 3 - i }}
                 >
-                  {t.avatar}
+                  <img src={t.avatar} alt={t.name} />
                 </div>
               ))}
               <div className="avatar-count">+2k</div>
@@ -155,7 +155,9 @@ const TestimonialsSection = () => {
                 className={`testimonial-card ${index === activeIndex ? 'active' : ''}`}
               >
                 <div className="card-header">
-                  <div className="card-avatar">{testimonial.avatar}</div>
+                  <div className="card-avatar">
+                    <img src={testimonial.avatar} alt={testimonial.name} />
+                  </div>
                   <div className="card-info">
                     <span className="card-name">{testimonial.name}</span>
                     <span className="card-role">

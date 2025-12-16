@@ -23,7 +23,7 @@ const Header = ({ onNavigate }: HeaderProps) => {
   const navItems = [
     { page: 'home' as Page, label: 'Home' },
     { page: 'about' as Page, label: 'About' },
-    { page: 'services' as Page, label: 'Services' },
+    // { page: 'services' as Page, label: 'Services' }, // Temporarily disabled
     { page: 'contact' as Page, label: 'Contact' }
   ];
 

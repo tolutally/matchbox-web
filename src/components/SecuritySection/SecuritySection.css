@@ -124,16 +124,135 @@
   background: rgba(255, 255, 255, 0.05);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.7);
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  animation: icon-float 3s ease-in-out infinite;
 }
 
-.security-feature:hover .feature-icon-circle {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+/* Icon animations */
+@keyframes icon-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
 }
 
+@keyframes icon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  50% {
+    box-shadow: 0 0 15px 2px currentColor;
+  }
+}
+
+/* PHI Privacy - Purple/Violet */
+.security-feature:nth-child(1) .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(139, 92, 246, 0.1));
+  box-shadow: 
+    inset 0 0 0 1px rgba(167, 139, 250, 0.3),
+    0 0 20px rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+  animation-delay: 0s;
+}
+
+.security-feature:nth-child(1):hover .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.25), rgba(139, 92, 246, 0.2));
+  box-shadow: 
+    inset 0 0 0 1px rgba(167, 139, 250, 0.5),
+    0 0 30px rgba(139, 92, 246, 0.4);
+  transform: scale(1.1);
+  animation: icon-pulse 1.5s ease-in-out infinite;
+}
+
+/* Encrypted - Cyan/Blue */
+.security-feature:nth-child(2) .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(14, 165, 233, 0.1));
+  box-shadow: 
+    inset 0 0 0 1px rgba(56, 189, 248, 0.3),
+    0 0 20px rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+  animation-delay: 0.2s;
+}
+
+.security-feature:nth-child(2):hover .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(14, 165, 233, 0.2));
+  box-shadow: 
+    inset 0 0 0 1px rgba(56, 189, 248, 0.5),
+    0 0 30px rgba(14, 165, 233, 0.4);
+  transform: scale(1.1);
+  animation: icon-pulse 1.5s ease-in-out infinite;
+}
+
+/* Role-based - Amber/Orange */
+.security-feature:nth-child(3) .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.15), rgba(245, 158, 11, 0.1));
+  box-shadow: 
+    inset 0 0 0 1px rgba(251, 146, 60, 0.3),
+    0 0 20px rgba(245, 158, 11, 0.2);
+  color: #fb923c;
+  animation-delay: 0.4s;
+}
+
+.security-feature:nth-child(3):hover .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.25), rgba(245, 158, 11, 0.2));
+  box-shadow: 
+    inset 0 0 0 1px rgba(251, 146, 60, 0.5),
+    0 0 30px rgba(245, 158, 11, 0.4);
+  transform: scale(1.1);
+  animation: icon-pulse 1.5s ease-in-out infinite;
+}
+
+/* Secure login - Emerald/Green */
+.security-feature:nth-child(4) .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(16, 185, 129, 0.1));
+  box-shadow: 
+    inset 0 0 0 1px rgba(52, 211, 153, 0.3),
+    0 0 20px rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  animation-delay: 0.6s;
+}
+
+.security-feature:nth-child(4):hover .feature-icon-circle {
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.25), rgba(16, 185, 129, 0.2));
+  box-shadow: 
+    inset 0 0 0 1px rgba(52, 211, 153, 0.5),
+    0 0 30px rgba(16, 185, 129, 0.4);
+  transform: scale(1.1);
+  animation: icon-pulse 1.5s ease-in-out infinite;
+}
+
+/* HIPAA - Rose/Pink (highlight) */
+.security-feature:nth-child(5) .feature-icon-circle,
 .feature-icon-circle.highlight {
-  color: #7dd3fc;
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.15), rgba(244, 63, 94, 0.1));
+  box-shadow: 
+    inset 0 0 0 1px rgba(251, 113, 133, 0.3),
+    0 0 20px rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+  animation-delay: 0.8s;
+}
+
+.security-feature:nth-child(5):hover .feature-icon-circle,
+.security-feature:hover .feature-icon-circle.highlight {
+  background: linear-gradient(135deg, rgba(251, 113, 133, 0.25), rgba(244, 63, 94, 0.2));
+  box-shadow: 
+    inset 0 0 0 1px rgba(251, 113, 133, 0.5),
+    0 0 30px rgba(244, 63, 94, 0.4);
+  transform: scale(1.1);
+  animation: icon-pulse 1.5s ease-in-out infinite;
+}
+
+/* Feature label colors on hover */
+.security-feature:nth-child(1):hover span { color: #a78bfa; }
+.security-feature:nth-child(2):hover span { color: #38bdf8; }
+.security-feature:nth-child(3):hover span { color: #fb923c; }
+.security-feature:nth-child(4):hover span { color: #34d399; }
+.security-feature:nth-child(5):hover span { color: #fb7185; }
+
+.security-feature span {
+  transition: color 0.3s ease;
 }
 
 /* Disclaimer */

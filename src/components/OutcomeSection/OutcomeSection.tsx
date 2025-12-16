@@ -9,11 +9,11 @@ const OutcomeSection = () => {
           <h2 className="outcome-title">
             Architected for precision.
           </h2>
-          <p className="outcome-subtitle">
+          <h4 className="outcome-subtitle" size = "xl">
             Unlike generic phone trees, Matchbox voice agents understand context,
             follow your booking rules, and keep every caller on a clean,
             reliable path from call → appointment → reminder.
-          </p>
+          </h4>
         </div>
 
         <div className="outcome-grid">
@@ -61,7 +61,7 @@ const OutcomeSection = () => {
                 Context-Aware Call Engine
               </h3>
               <p className="card-description">
-                Matchbox listens like your best front-desk staff — applying your
+                Matchbox listens like your best front-desk staff, applying your
                 intake rules, clinic/service policies, and availability logic in
                 real time so every call ends in a clean, correct booking.
               </p>
@@ -168,7 +168,7 @@ const OutcomeSection = () => {
               Built for peak hours & overflow
             </h3>
             <p className="card-description">
-              Lunch rush, storm season, Monday mornings — Matchbox scales up
+              Whether it’s lunch rush, storm season, or monday mornings, Matchbox scales up
               instantly so you never miss a call, even when the phone won't
               stop ringing.
             </p>
@@ -239,7 +239,7 @@ const OutcomeSection = () => {
                 </h3>
                 <p className="card-description">
                   Matchbox handles the full journey: answers the call, books the
-                  slot, sends reminders, and triggers follow-ups — so your team
+                  slot, sends reminders, and triggers follow-ups, so your team
                   just shows up and does the work.
                 </p>
               </div>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
-import Services from './pages/Services';
+// import Services from './pages/Services'; // Temporarily disabled
 import Contact from './pages/Contact';
 import { NavigationContext } from './contexts/NavigationContext';
 import type { Page } from './contexts/NavigationContext';
@@ -18,8 +18,8 @@ function App() {
         return <Home />;
       case 'about':
         return <About />;
-      case 'services':
-        return <Services />;
+      // case 'services':
+      //   return <Services />; // Temporarily disabled
       case 'contact':
         return <Contact />;
       default:
