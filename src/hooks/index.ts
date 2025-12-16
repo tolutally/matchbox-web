@@ -60,19 +60,21 @@ export const useWindowSize = () => {
  * Custom hook for media queries
  */
 export const useMediaQuery = (query: string): boolean => {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia(query).matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
 
-    const listener = () => setMatches(media.matches);
-    media.addListener(listener);
+    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
+    media.addEventListener('change', listener);
 
-    return () => media.removeListener(listener);
-  }, [matches, query]);
+    return () => media.removeEventListener('change', listener);
+  }, [query]);
 
   return matches;
 };

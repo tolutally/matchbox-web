@@ -9,7 +9,7 @@ const OutcomeSection = () => {
           <h2 className="outcome-title">
             Architected for precision.
           </h2>
-          <h4 className="outcome-subtitle" size = "xl">
+          <h4 className="outcome-subtitle">
             Unlike generic phone trees, Matchbox voice agents understand context,
             follow your booking rules, and keep every caller on a clean,
             reliable path from call → appointment → reminder.

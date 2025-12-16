@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import About from './pages/About';
 // import Services from './pages/Services'; // Temporarily disabled
+import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
 import { NavigationContext } from './contexts/NavigationContext';
 import type { Page } from './contexts/NavigationContext';
@@ -20,6 +21,8 @@ function App() {
         return <About />;
       // case 'services':
       //   return <Services />; // Temporarily disabled
+      case 'pricing':
+        return <Pricing />;
       case 'contact':
         return <Contact />;
       default:

@@ -1,7 +1,7 @@
 import BackgroundLayer from "../components/BackgroundLayer";
 import "./About.css";
 
-export default function AboutPage(): JSX.Element {
+export default function AboutPage() {
   return (
     <div className="about-page">
       {/* Custom background */}
