@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './ProcessSection.css';
-import { useNavigation } from '../../contexts/NavigationContext';
+import { ContactModal } from '../ContactModal';
 
 interface ProcessStep {
   id: number;
@@ -37,9 +37,15 @@ const processSteps: ProcessStep[] = [
 
 const ProcessSection = () => {
   const [activeStep, setActiveStep] = useState(1);
-  const { navigate } = useNavigation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const currentStep = processSteps.find((step) => step.id === activeStep);
+
+  const handleSubmit = async (payload: { email: string; phone: string }) => {
+    console.log('Process section submission:', payload);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return true;
+  };
 
   return (
     <section className="process-section">
@@ -86,7 +92,7 @@ const ProcessSection = () => {
           </div>
           <h3 className="step-title">{currentStep?.title}</h3>
           <p className="step-description">{currentStep?.description}</p>
-          <button className="process-cta" onClick={() => navigate('contact')}>
+          <button className="process-cta" onClick={() => setIsModalOpen(true)}>
             Get Started
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +109,13 @@ const ProcessSection = () => {
             </svg>
           </button>
         </div>
+
+        {/* Contact Modal */}
+        <ContactModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleSubmit}
+        />
       </div>
     </section>
   );

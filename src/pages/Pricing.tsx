@@ -220,7 +220,7 @@ const Pricing = () => {
             The only voice AI you’ll trust  <span className="gradient-text">on your busiest days</span>
           </h1>
           <p className="pricing-subheadline">
-            Handle inbound and outbound calls with<strong>AI-first voice agents</strong> that answer,
+            Handle inbound and outbound calls with <strong>AI-first voice agents</strong> that answer,
             qualify, schedule, and follow up - automatically, reliably, and at scale.
           </p>
           
@@ -381,8 +381,6 @@ const Pricing = () => {
           <PricingCTA 
             imageSrc="/matchbox-preview.png"
             imageAlt="Matchbox voice agent preview"
-            onEmailMe={(payload) => console.log('Email me:', payload)}
-            onCallMe={(payload) => console.log('Call me:', payload)}
           />
         </div>
       </section>

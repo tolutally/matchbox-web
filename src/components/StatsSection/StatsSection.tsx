@@ -1,6 +1,10 @@
+import { useState } from 'react';
+import { ContactModal } from '../ContactModal';
 import './StatsSection.css';
 
 const StatsSection = () => {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
   return (
     <section className="stats-section">
       <div className="stats-container">
@@ -154,15 +158,24 @@ const StatsSection = () => {
                 <span className="stat-card-label">Staff hours saved every week</span>
               </div>
             </div>
-
-            <div className="stats-cta-wrapper">
-              <button className="stats-cta">
-                Start with Matchbox
-              </button>
-            </div>
+          </div>
+        </div>
+        <div className="stats-cta-row">
+          <div className="stats-cta-wrapper">
+            <button className="stats-cta" type="button" onClick={() => setIsContactOpen(true)}>
+              Start with Matchbox
+            </button>
           </div>
         </div>
       </div>
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+        onSubmit={() => {
+          setIsContactOpen(false);
+          return true;
+        }}
+      />
     </section>
   );
 };

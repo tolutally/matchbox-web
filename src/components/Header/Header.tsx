@@ -82,7 +82,7 @@ const Header = ({ onNavigate }: HeaderProps) => {
           <span className="hamburger-line"></span>
         </button>
 
-        {/* Navigation */}
+        {/* Navigation - Center */}
         <nav className={`nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
           <ul className="nav-list">
             {navItems.map(({ page, label }) => (
@@ -97,7 +97,33 @@ const Header = ({ onNavigate }: HeaderProps) => {
               </li>
             ))}
           </ul>
+          
+          {/* See in Action CTA Button - Mobile only (inside nav) */}
+          <button
+            onClick={() => handleNavigation('call-me')}
+            className="header-cta-btn header-cta-btn-mobile"
+            type="button"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z" />
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+            See in Action
+          </button>
         </nav>
+
+        {/* See in Action CTA Button - Desktop only (far right) */}
+        <button
+          onClick={() => handleNavigation('call-me')}
+          className="header-cta-btn header-cta-btn-desktop"
+          type="button"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z" />
+            <circle cx="12" cy="12" r="10" />
+          </svg>
+          See in Action
+        </button>
 
         {/* Mobile Menu Overlay */}
         <div 

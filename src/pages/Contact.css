@@ -359,3 +359,119 @@
   width: 100%;
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Form Validation States */
+.form-input.input-error,
+.form-textarea.input-error {
+  border-color: rgba(248, 113, 113, 0.5);
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.15);
+}
+
+.field-error {
+  font-size: 0.75rem;
+  color: #f87171;
+  margin-top: 0.375rem;
+}
+
+.form-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  color: #f87171;
+  font-size: 0.875rem;
+}
+
+.char-count {
+  font-size: 0.6875rem;
+  color: #64748b;
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+/* Loading State */
+.form-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success State */
+.form-success {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.form-success .success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 197, 94, 0.1));
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+  margin-bottom: 1.5rem;
+  animation: scaleIn 0.4s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.form-success h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-success p {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0 0 1.5rem 0;
+}
+
+.form-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-reset-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

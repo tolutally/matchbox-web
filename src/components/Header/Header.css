@@ -28,6 +28,7 @@
   display: flex;
   align-items: center;
   z-index: 102;
+  flex-shrink: 0;
 }
 
 .logo-image {
@@ -44,6 +45,13 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Navigation - centered */
+.nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-list {
@@ -76,6 +84,43 @@
 .nav-link.active {
   color: #38bdf8;
   border-bottom-color: #38bdf8;
+}
+
+/* Header CTA Button */
+.header-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Desktop CTA - shown on desktop, hidden on mobile */
+.header-cta-btn-desktop {
+  display: inline-flex;
+}
+
+/* Mobile CTA inside nav - hidden on desktop */
+.header-cta-btn-mobile {
+  display: none;
+}
+
+.header-cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+}
+
+.header-cta-btn svg {
+  flex-shrink: 0;
 }
 
 /* Mobile Menu Button */
@@ -196,6 +241,19 @@
   .nav-link.active {
     border-bottom: none;
     color: #38bdf8;
+  }
+
+  /* Hide desktop CTA on mobile */
+  .header-cta-btn-desktop {
+    display: none;
+  }
+
+  /* Show mobile CTA inside nav on mobile */
+  .header-cta-btn-mobile {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    width: 100%;
+    justify-content: center;
   }
 
   .mobile-menu-overlay {

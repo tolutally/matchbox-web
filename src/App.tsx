@@ -5,6 +5,7 @@ import About from './pages/About';
 // import Services from './pages/Services'; // Temporarily disabled
 import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
+import CallMe from './pages/CallMe';
 import { NavigationContext } from './contexts/NavigationContext';
 import type { Page } from './contexts/NavigationContext';
 import './App.css';
@@ -25,6 +26,8 @@ function App() {
         return <Pricing />;
       case 'contact':
         return <Contact />;
+      case 'call-me':
+        return <CallMe />;
       default:
         return <Home />;
     }

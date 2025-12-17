@@ -1,8 +1,19 @@
+import { useState } from 'react';
 import './HeroSection.css';
+import { ContactModal } from '../ContactModal';
 import { useNavigation } from '../../contexts/NavigationContext';
 
 const HeroSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { navigate } = useNavigation();
+
+  const handleSubmit = async (payload: { email: string; phone: string }) => {
+    // Simulate API call
+    console.log('Submitting:', payload);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Return true for success, false for failure
+    return true;
+  };
 
   return (
     <section className="hero-section">
@@ -36,13 +47,13 @@ const HeroSection = () => {
           <div className="hero-btn-primary-wrapper">
             <button 
               className="hero-btn hero-btn-primary"
-              onClick={() => navigate('contact')}
+              onClick={() => setIsModalOpen(true)}
             >
               Start Automating Calls
             </button>
           </div>
 
-          <button className="hero-btn hero-btn-secondary">
+          <button className="hero-btn hero-btn-secondary" onClick={() => navigate('call-me')}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -60,6 +71,13 @@ const HeroSection = () => {
             See Matchbox in Action
           </button>
         </div>
+
+        {/* Contact Modal */}
+        <ContactModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleSubmit}
+        />
 
         {/* Logos / Social Proof - Temporarily disabled
         <div className="hero-social-proof">

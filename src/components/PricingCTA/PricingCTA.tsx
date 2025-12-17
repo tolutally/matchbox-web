@@ -1,12 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
+import { useForm } from '@formspree/react';
+import { validateEmail, validatePhone, isBotSubmission } from '../../utils/validation';
+import { COUNTRIES, DEFAULT_COUNTRY } from '../../utils/countries';
 import './PricingCTA.css';
 
 type PricingCTAProps = {
   imageSrc: string;
   imageAlt?: string;
-  onEmailMe?: (payload: { email: string; phone?: string }) => void;
-  onCallMe?: (payload: { email?: string; phone: string }) => void;
 };
+
+// Track submissions to prevent duplicates (in-memory for session)
+const submittedCombinations = new Set<string>();
 
 const Chip = ({ text }: { text: string }) => {
   return (
@@ -22,29 +26,92 @@ const Chip = ({ text }: { text: string }) => {
 const PricingCTA = ({ 
   imageSrc, 
   imageAlt = 'Matchbox preview',
-  onEmailMe, 
-  onCallMe 
 }: PricingCTAProps) => {
+  const [state, formspreeSubmit] = useForm("xyzrrazj");
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState(DEFAULT_COUNTRY.dialCode);
   const [status, setStatus] = useState<string | null>(null);
+  const [statusType, setStatusType] = useState<'success' | 'error' | null>(null);
+  const formLoadTime = useRef<number>(Date.now());
+  const currentAction = useRef<'email' | 'call'>('email');
 
-  const isEmailValid = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), [email]);
-  const isPhoneValid = useMemo(() => phone.replace(/[^\d+]/g, '').length >= 10, [phone]);
+  // Reset form load time when component mounts
+  useEffect(() => {
+    formLoadTime.current = Date.now();
+  }, []);
 
-  function handleEmailMe() {
+  // Handle success/error from Formspree
+  useEffect(() => {
+    if (state.succeeded) {
+      const fullPhone = `${countryCode}${phone}`;
+      const key = `${email.toLowerCase()}-${fullPhone.replace(/[^\d]/g, '')}`;
+      submittedCombinations.add(key);
+      
+      if (currentAction.current === 'email') {
+        setStatus('Done — check your inbox.');
+      } else {
+        setStatus("Done — we'll call you.");
+      }
+      setStatusType('success');
+    } else if (state.errors) {
+      setStatus('Something went wrong. Please try again.');
+      setStatusType('error');
+    }
+  }, [state.succeeded, state.errors, email, phone, countryCode]);
+
+  const emailValidation = useMemo(() => validateEmail(email), [email]);
+  const phoneValidation = useMemo(() => validatePhone(`${countryCode}${phone}`), [phone, countryCode]);
+
+  // Check for duplicate submission
+  const isDuplicate = useMemo(() => {
+    if (!email && !phone) return false;
+    const key = `${email.toLowerCase()}-${countryCode}${phone.replace(/[^\d]/g, '')}`;
+    return submittedCombinations.has(key);
+  }, [email, phone, countryCode]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setStatus(null);
-    if (!isEmailValid) return setStatus('Enter a valid email.');
-    onEmailMe?.({ email, phone: phone || undefined });
-    setStatus('Done — check your inbox.');
-  }
+    setStatusType(null);
 
-  function handleCallMe() {
-    setStatus(null);
-    if (!isPhoneValid) return setStatus('Enter a valid phone number.');
-    onCallMe?.({ phone, email: email || undefined });
-    setStatus("Done — we'll call you.");
-  }
+    // Bot check
+    if (isBotSubmission(formLoadTime.current)) {
+      setStatus('Please take your time filling the form.');
+      setStatusType('error');
+      return;
+    }
+
+    // Duplicate check
+    if (isDuplicate) {
+      setStatus("You've already submitted. We'll be in touch!");
+      setStatusType('error');
+      return;
+    }
+
+    const action = currentAction.current;
+
+    if (action === 'email') {
+      // Email validation
+      const emailCheck = validateEmail(email);
+      if (!emailCheck.isValid) {
+        setStatus(emailCheck.error || 'Enter a valid email.');
+        setStatusType('error');
+        return;
+      }
+    } else {
+      // Call validation (Phone required)
+      const phoneCheck = validatePhone(`${countryCode}${phone}`);
+      if (!phoneCheck.isValid) {
+        setStatus(phoneCheck.error || 'Enter a valid phone number.');
+        setStatusType('error');
+        return;
+      }
+    }
+
+    // Submit to Formspree
+    formspreeSubmit(e);
+  };
 
   return (
     <section className="pricing-cta">
@@ -154,53 +221,87 @@ const PricingCTA = ({
             </p>
 
             <div className="cta-form-card">
-              <div className="cta-form-fields">
+              <form className="cta-form-fields" onSubmit={handleSubmit}>
+                <input type="hidden" name="phone" value={`${countryCode}${phone}`} />
+                <input type="hidden" name="_subject" value="New Request from Pricing Page" />
+                <input type="hidden" name="source" value="pricing_cta" />
+
                 <label className="cta-form-label">
                   <span>Email</span>
                   <input
+                    name="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
                     type="email"
-                    className="cta-form-input"
+                    className={`cta-form-input ${email && !emailValidation.isValid ? 'input-error' : ''}`}
+                    disabled={state.submitting}
                   />
                 </label>
 
                 <label className="cta-form-label">
                   <span>Phone</span>
-                  <input
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+1 (555) 123-4567"
-                    type="tel"
-                    className="cta-form-input"
-                  />
+                  <div className="cta-phone-group">
+                    <input
+                      list="cta-country-codes"
+                      className="cta-country-select"
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      placeholder="+1"
+                      disabled={state.submitting}
+                    />
+                    <datalist id="cta-country-codes">
+                      {COUNTRIES.map((country) => (
+                        <option key={country.code} value={country.dialCode}>
+                          {country.name} {country.flag}
+                        </option>
+                      ))}
+                    </datalist>
+                    <input
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="(555) 123-4567"
+                      type="tel"
+                      className={`cta-form-input ${phone && !phoneValidation.isValid ? 'input-error' : ''}`}
+                      disabled={state.submitting}
+                    />
+                  </div>
                 </label>
 
                 <div className="cta-form-buttons">
                   <button
-                    type="button"
-                    onClick={handleEmailMe}
+                    type="submit"
+                    name="action"
+                    value="email"
+                    onClick={() => currentAction.current = 'email'}
                     className="cta-email-btn"
+                    disabled={state.submitting}
                   >
-                    Email me
+                    {state.submitting && currentAction.current === 'email' ? 'Sending...' : 'Email me'}
                   </button>
 
                   <button
-                    type="button"
-                    onClick={handleCallMe}
+                    type="submit"
+                    name="action"
+                    value="call"
+                    onClick={() => currentAction.current = 'call'}
                     className="cta-call-btn"
+                    disabled={state.submitting}
                   >
-                    Call me
+                    {state.submitting && currentAction.current === 'call' ? 'Sending...' : 'Call me'}
                   </button>
                 </div>
 
-                {status && <p className="cta-status">{status}</p>}
+                {status && (
+                  <p className={`cta-status ${statusType === 'error' ? 'cta-status-error' : 'cta-status-success'}`}>
+                    {status}
+                  </p>
+                )}
 
                 <p className="cta-disclaimer">
                   No spam. Just a quick follow-up about Matchbox.
                 </p>
-              </div>
+              </form>
             </div>
           </div>
         </div>
