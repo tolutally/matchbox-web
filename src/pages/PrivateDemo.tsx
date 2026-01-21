@@ -208,8 +208,13 @@ const PrivateDemo = () => {
       return;
     }
 
-    // vapiRef will be set after the VapiWidget renders in this state
-    vapiRef.current?.start();
+    // Small delay to ensure VapiWidget has initialized before starting
+    // This is needed because the password check is synchronous (unlike Formspree async)
+    const startTimer = setTimeout(() => {
+      vapiRef.current?.start();
+    }, 100);
+
+    return () => clearTimeout(startTimer);
   }, [demoState, selectedIndustry, getAssistantId, endDemo]);
 
   // Handle Vapi call end (user hung up or call ended)
