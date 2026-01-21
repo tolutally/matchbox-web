@@ -60,6 +60,9 @@ const DEMO_DURATION = 120; // 2 minutes in seconds
 const DEMO_LIMIT_COUNT = 2;
 const DEMO_LIMIT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
+// Static password fallback (used when API is not available, e.g., local dev)
+const STATIC_PASSWORD = import.meta.env.VITE_PRIVATE_DEMO_PASSWORD || 'demo2025';
+
 const PrivateDemo = () => {
   // Token state
   const [tokenInput, setTokenInput] = useState('');
@@ -84,7 +87,7 @@ const PrivateDemo = () => {
   const vapiRef = useRef<VapiWidgetHandle>(null);
   const transcriptFeedRef = useRef<HTMLDivElement | null>(null);
 
-  // Token submission (validates against API)
+  // Token submission (validates against API, falls back to static password)
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -103,6 +106,20 @@ const PrivateDemo = () => {
         body: JSON.stringify({ token: tokenInput }),
       });
 
+      // If API returns 404 (not deployed), fall back to static password
+      if (response.status === 404) {
+        if (tokenInput === STATIC_PASSWORD) {
+          setIsAuthenticated(true);
+          sessionStorage.setItem('privateDemo_authenticated', 'true');
+          setDemoState('ready');
+          setSelectedIndustry('healthcare');
+          setTokenError('');
+        } else {
+          setTokenError('Invalid password. Please try again.');
+        }
+        return;
+      }
+
       const data = await response.json();
 
       if (data.valid) {
@@ -115,7 +132,16 @@ const PrivateDemo = () => {
         setTokenError(data.error || 'Invalid token. Please try again.');
       }
     } catch (err) {
-      setTokenError('Unable to validate token. Please try again.');
+      // Network error - fall back to static password
+      if (tokenInput === STATIC_PASSWORD) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('privateDemo_authenticated', 'true');
+        setDemoState('ready');
+        setSelectedIndustry('healthcare');
+        setTokenError('');
+      } else {
+        setTokenError('Invalid token. Please try again.');
+      }
     } finally {
       setIsValidating(false);
     }

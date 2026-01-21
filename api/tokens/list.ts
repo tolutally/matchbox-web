@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
 interface TokenData {
   used: boolean;
@@ -34,15 +34,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    // Check if Redis is configured
+    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      return res.status(200).json({ 
+        success: true,
+        tokens: [],
+        total: 0,
+        active: 0,
+        used: 0,
+        expired: 0,
+        warning: 'Redis not configured. Add UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable token management.',
+      });
+    }
+
+    // Initialize Redis
+    const redis = Redis.fromEnv();
+
     // Get all token keys
-    const keys = await kv.keys('demo_token:*');
+    const keys = await redis.keys('demo_token:*');
     
     const tokens: TokenListItem[] = [];
     const now = Date.now();
 
     for (const key of keys) {
-      const tokenData = await kv.get<TokenData>(key);
-      if (!tokenData) continue;
+      const tokenDataStr = await redis.get<string>(key);
+      if (!tokenDataStr) continue;
+
+      const tokenData: TokenData = typeof tokenDataStr === 'string' 
+        ? JSON.parse(tokenDataStr) 
+        : tokenDataStr;
 
       const token = key.replace('demo_token:', '');
       

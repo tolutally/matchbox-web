@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
 interface TokenData {
   used: boolean;
@@ -30,6 +30,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    // Check if Redis is configured
+    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      return res.status(400).json({ 
+        error: 'Redis not configured. Please add UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN environment variables.',
+      });
+    }
+
+    // Initialize Redis
+    const redis = Redis.fromEnv();
+
     // Validate count (max 20 at once)
     const tokenCount = Math.min(Math.max(1, parseInt(count) || 1), 20);
     const expireHours = Math.min(Math.max(1, parseInt(expiresInHours) || 48), 720); // Max 30 days
@@ -48,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       };
 
       // Store with auto-expiration
-      await kv.set(`demo_token:${token}`, tokenData, { 
+      await redis.set(`demo_token:${token}`, JSON.stringify(tokenData), { 
         ex: expireHours * 60 * 60 
       });
 

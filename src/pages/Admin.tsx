@@ -29,6 +29,7 @@ const Admin = () => {
   const [stats, setStats] = useState<TokenStats>({ total: 0, active: 0, used: 0, expired: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [listError, setListError] = useState('');
+  const [kvWarning, setKvWarning] = useState<string | null>(null);
 
   // Generate form state
   const [generateCount, setGenerateCount] = useState(1);
@@ -62,6 +63,12 @@ const Admin = () => {
         body: JSON.stringify({ adminPassword }),
       });
 
+      // Handle 404 - API not available (local dev)
+      if (response.status === 404) {
+        setListError('Token API not available. The admin panel only works in production (Vercel). For local testing, use the static password from .env');
+        return;
+      }
+
       const data = await response.json();
 
       if (response.ok && data.success) {
@@ -73,6 +80,12 @@ const Admin = () => {
           expired: data.expired,
         });
         setIsAuthenticated(true);
+        // Check for KV warning
+        if (data.warning) {
+          setKvWarning(data.warning);
+        } else {
+          setKvWarning(null);
+        }
       } else {
         setListError(data.error || 'Failed to fetch tokens');
         if (response.status === 401) {
@@ -333,6 +346,24 @@ const Admin = () => {
             Logout
           </button>
         </div>
+
+        {/* KV Warning */}
+        {kvWarning && (
+          <div className="admin-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+              <path d="M12 9v4"/>
+              <path d="M12 17h.01"/>
+            </svg>
+            <div>
+              <strong>Database Not Configured</strong>
+              <p>{kvWarning}</p>
+              <p className="admin-warning-hint">
+                To enable token generation: Vercel Dashboard → Storage → Marketplace → Upstash Redis → Create & Connect
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Stats */}
         <div className="admin-stats">

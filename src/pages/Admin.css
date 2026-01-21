@@ -48,6 +48,41 @@
   max-width: 1000px;
 }
 
+/* Warning Banner */
+.admin-warning {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #fbbf24;
+}
+
+.admin-warning svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.admin-warning strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.admin-warning p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: rgba(251, 191, 36, 0.9);
+}
+
+.admin-warning-hint {
+  margin-top: 0.5rem !important;
+  font-size: 0.75rem !important;
+  color: rgba(251, 191, 36, 0.7) !important;
+}
+
 /* Login Card */
 .admin-login-card {
   background: rgba(15, 23, 42, 0.8);
