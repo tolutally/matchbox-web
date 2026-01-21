@@ -39,7 +39,6 @@ const VapiWidget = forwardRef<VapiWidgetHandle, VapiWidgetProps>(
     const publicKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
 
     if (!publicKey) {
-      console.error('VITE_VAPI_PUBLIC_KEY is not set');
       onError?.('Demo configuration error. Please try again later.');
       return;
     }
@@ -48,7 +47,6 @@ const VapiWidget = forwardRef<VapiWidgetHandle, VapiWidgetProps>(
       const VapiConstructor: any = (Vapi as any)?.default ?? Vapi;
 
       if (typeof VapiConstructor !== 'function') {
-        console.error('Vapi SDK not available or invalid export:', VapiConstructor);
         onError?.("Demo couldn't start. Please refresh or try again.");
         return;
       }
@@ -62,22 +60,18 @@ const VapiWidget = forwardRef<VapiWidgetHandle, VapiWidgetProps>(
           if (!vapi) return;
 
           vapi.on('call-start', () => {
-            console.log('Vapi call started');
             onCallStart?.();
           });
 
           vapi.on('call-end', () => {
-            console.log('Vapi call ended');
             onCallEnd?.();
           });
 
           vapi.on('error', (error) => {
-            console.error('Vapi error:', error);
             onError?.(error?.message || "Demo couldn't start. Please refresh or try again.");
           });
 
           vapi.on('message', (message: any) => {
-            console.log('Vapi message event:', message);
             const isTranscript =
               message?.type === 'transcript' ||
               message?.type === "transcript[transcriptType='final']";
@@ -91,15 +85,14 @@ const VapiWidget = forwardRef<VapiWidgetHandle, VapiWidgetProps>(
           });
 
           vapi.on('speech-start', () => {
-            console.log('Assistant started speaking');
+            // Speech started
           });
 
           vapi.on('speech-end', () => {
-            console.log('Assistant stopped speaking');
+            // Speech ended
           });
 
         } catch (err) {
-          console.error('Failed to initialize Vapi:', err);
           onError?.("Demo couldn't start. Please refresh or try again.");
         }
       }
@@ -127,7 +120,6 @@ const VapiWidget = forwardRef<VapiWidgetHandle, VapiWidgetProps>(
       try {
         vapiRef.current.start(assistantId);
       } catch (err) {
-        console.error('Failed to start Vapi call:', err);
         onError?.("Demo couldn't start. Please refresh or try again.");
       }
     }, [assistantId, onError]);
@@ -138,7 +130,7 @@ const VapiWidget = forwardRef<VapiWidgetHandle, VapiWidgetProps>(
         try {
           vapiRef.current.stop();
         } catch (err) {
-          console.error('Failed to stop Vapi call:', err);
+          // Silent fail on stop
         }
       }
     }, []);

@@ -59,12 +59,12 @@ const INDUSTRIES: { id: Industry; label: string; description: string; icon: Reac
 const DEMO_DURATION = 120; // 2 minutes in seconds
 const DEMO_LIMIT_COUNT = 2;
 const DEMO_LIMIT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
-const PRIVATE_DEMO_PASSWORD = import.meta.env.VITE_PRIVATE_DEMO_PASSWORD || 'demo2025';
 
 const PrivateDemo = () => {
-  // Password state
-  const [passwordInput, setPasswordInput] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  // Token state
+  const [tokenInput, setTokenInput] = useState('');
+  const [tokenError, setTokenError] = useState('');
+  const [isValidating, setIsValidating] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     if (typeof window === 'undefined') return false;
     return sessionStorage.getItem('privateDemo_authenticated') === 'true';
@@ -84,17 +84,40 @@ const PrivateDemo = () => {
   const vapiRef = useRef<VapiWidgetHandle>(null);
   const transcriptFeedRef = useRef<HTMLDivElement | null>(null);
 
-  // Password submission
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  // Token submission (validates against API)
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === PRIVATE_DEMO_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('privateDemo_authenticated', 'true');
-      setDemoState('ready');
-      setSelectedIndustry('healthcare'); // Pre-select default
-      setPasswordError('');
-    } else {
-      setPasswordError('Incorrect password. Please try again.');
+    
+    if (!tokenInput.trim()) {
+      setTokenError('Please enter your access token');
+      return;
+    }
+
+    setIsValidating(true);
+    setTokenError('');
+
+    try {
+      const response = await fetch('/api/tokens/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: tokenInput }),
+      });
+
+      const data = await response.json();
+
+      if (data.valid) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('privateDemo_authenticated', 'true');
+        setDemoState('ready');
+        setSelectedIndustry('healthcare'); // Pre-select default
+        setTokenError('');
+      } else {
+        setTokenError(data.error || 'Invalid token. Please try again.');
+      }
+    } catch (err) {
+      setTokenError('Unable to validate token. Please try again.');
+    } finally {
+      setIsValidating(false);
     }
   };
 
@@ -282,49 +305,60 @@ const PrivateDemo = () => {
             </span>
             <h1 className="callme-title">Private Demo Access</h1>
             <p className="callme-subtitle">
-              This demo is password protected. Enter the password to continue.
+              Enter your one-time access token to continue.
             </p>
           </div>
 
-          {/* Password Form */}
+          {/* Token Form */}
           <div className="callme-gate-card">
-            <h2 className="callme-gate-title">Enter Password</h2>
+            <h2 className="callme-gate-title">Enter Access Token</h2>
             <form className="callme-gate-form" onSubmit={handlePasswordSubmit}>
               <div className="callme-field">
-                <label htmlFor="demo-password">Password</label>
+                <label htmlFor="demo-token">Access Token</label>
                 <input
-                  id="demo-password"
-                  type="password"
-                  value={passwordInput}
+                  id="demo-token"
+                  type="text"
+                  value={tokenInput}
                   onChange={(e) => {
-                    setPasswordInput(e.target.value);
-                    setPasswordError('');
+                    setTokenInput(e.target.value.toUpperCase());
+                    setTokenError('');
                   }}
-                  placeholder="Enter password"
+                  placeholder="DEMO-XXXX-XXXX"
                   autoFocus
+                  autoComplete="off"
+                  disabled={isValidating}
                   required
                 />
               </div>
 
-              {passwordError && (
+              {tokenError && (
                 <div className="callme-error">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M12 8v4" />
                     <path d="M12 16h.01" />
                   </svg>
-                  {passwordError}
+                  {tokenError}
                 </div>
               )}
 
-              <button type="submit" className="callme-btn callme-btn-primary">
-                Access Demo
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
+              <button 
+                type="submit" 
+                className="callme-btn callme-btn-primary"
+                disabled={isValidating}
+              >
+                {isValidating ? 'Validating...' : 'Access Demo'}
+                {!isValidating && (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                )}
               </button>
             </form>
+            <p className="callme-gate-note">
+              Need a token? Contact us at <a href="mailto:demo@getmatchbox.org">demo@getmatchbox.org</a>
+            </p>
           </div>
         </div>
       </section>

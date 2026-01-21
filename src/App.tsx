@@ -7,6 +7,7 @@ import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
 import CallMe from './pages/CallMe';
 import PrivateDemo from './pages/PrivateDemo';
+import Admin from './pages/Admin';
 import { NavigationContext } from './contexts/NavigationContext';
 import type { Page } from './contexts/NavigationContext';
 import './App.css';
@@ -20,6 +21,7 @@ const pageToPath: Record<Page, string> = {
   contact: '/contact',
   'call-me': '/call-me',
   'private-demo': '/private-demo',
+  admin: '/admin',
 };
 
 const normalizePath = (path: string) => {
@@ -77,6 +79,8 @@ function App() {
         return <CallMe />;
       case 'private-demo':
         return <PrivateDemo />;
+      case 'admin':
+        return <Admin />;
       default:
         return <Home />;
     }
