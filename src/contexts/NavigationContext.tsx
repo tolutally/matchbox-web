@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export type Page = 'home' | 'about' | 'services' | 'pricing' | 'contact' | 'call-me';
+export type Page = 'home' | 'about' | 'services' | 'pricing' | 'contact' | 'call-me' | 'private-demo';
 
 interface NavigationContextType {
   currentPage: Page;
